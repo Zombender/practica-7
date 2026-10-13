@@ -1,13 +1,27 @@
 package ni.edu.uam.gestion_productos.dto;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 public class ProductoRequestDTO {
     private String codigo;
     private String nombre;
-    private BigDecimal precioVenta;
-    private Integer existencia;
     private Integer categoriaId;
+    private Set<Integer> etiquetasIds;
+    private BigDecimal precioVenta;
+    private int existencia;
+
+    public Set<Integer> getEtiquetasIds() {
+        return etiquetasIds;
+    }
+
+    public void setEtiquetasIds(Set<Integer> etiquetasIds) {
+        this.etiquetasIds = etiquetasIds;
+    }
+
+    public void setExistencia(int existencia) {
+        this.existencia = existencia;
+    }
 
     public String getCodigo() {
         return codigo;

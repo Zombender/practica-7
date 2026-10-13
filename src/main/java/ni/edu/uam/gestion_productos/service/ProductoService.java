@@ -9,7 +9,9 @@ import ni.edu.uam.gestion_productos.repository.EtiquetaRepository;
 import ni.edu.uam.gestion_productos.repository.ProductoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProductoService {
@@ -61,7 +63,20 @@ public class ProductoService {
                 .findById(dto.getCategoriaId())
                 .orElseThrow(() ->
                         new RuntimeException("Categoría no encontrada"));
+        Set<Etiqueta> etiquetas = new HashSet<>();
+        if (dto.getEtiquetasIds() != null) {
+            for (Integer etiquetaId : dto.getEtiquetasIds()) {
 
+                Etiqueta etiqueta = etiquetaRepository
+                        .findById(etiquetaId)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Etiqueta no encontrada: " + etiquetaId
+                                ));
+
+                etiquetas.add(etiqueta);
+            }
+        }
         Producto producto = new Producto();
 
         producto.setCodigo(dto.getCodigo());
@@ -69,9 +84,11 @@ public class ProductoService {
         producto.setPrecioVenta(dto.getPrecioVenta());
         producto.setExistencia(dto.getExistencia());
         producto.setCategoria(categoria);
+        producto.setEtiquetas(etiquetas);
 
         return productoRepository.save(producto);
     }
+
     public void eliminar(Integer id) {
         productoRepository.deleteById(id);
     }
